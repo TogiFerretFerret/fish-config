@@ -16,16 +16,24 @@ function mount_watching
   --read-only
 end
 function fish_greeting
+	if status is-interactive
+		echo "" && echo "";fastfetch
+	end
 end
 if status is-interactive
-    # Commands to run in interactive sessions can go here
+
 end
 
+function ls
+    nu -c "ls $argv"
+end
 
+# The "Tree View" - See the hierarchy (Respects .gitignore!)
+alias lt="eza --icons --group-directories-first --tree --level=2 --git-ignore"
 
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
 zoxide init fish | source
-
+set -gx EDITOR /usr/bin/nvim
 
