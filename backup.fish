@@ -34,10 +34,11 @@ function ls
 end
 
 # The "Tree View" - See the hierarchy (Respects .gitignore!)
-alias lt="eza --icons --group-directories-first --tree --level=4 --git-ignore"
+alias lt="eza --icons --group-directories-first --tree --level=2 --git-ignore"
+alias yt-dlp='yt-dlp --extractor-args "youtube:player_client=default,-android_sdkless"'
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
 zoxide init fish | source
 set -gx EDITOR /usr/bin/nvim
-alias mpv="flatpak run io.mpv.Mpv"
+
