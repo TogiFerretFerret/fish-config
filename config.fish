@@ -39,5 +39,8 @@ alias lt="eza --icons --group-directories-first --tree --level=4 --git-ignore"
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
 zoxide init fish | source
+
 set -gx EDITOR /usr/bin/nvim
 alias mpv="flatpak run io.mpv.Mpv"
+alias claude='node -e "const f=require(\"os\").homedir()+\"/.claude.json\";try{const c=JSON.parse(require(\"fs\").readFileSync(f));if(c.oauthAccount?.accountUuid){delete c.oauthAccount.accountUuid;delete c.companion;require(\"fs\").writeFileSync(f,JSON.stringify(c,null,2));console.log(\"[buddy-fix] accountUuid removed\")}}catch{}" && command claude'
+
