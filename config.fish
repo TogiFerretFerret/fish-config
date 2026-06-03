@@ -26,11 +26,15 @@ function fish_greeting
 	end
 end
 if status is-interactive
-
+    if not pgrep -x gnome-keyring-d > /dev/null
+        eval (gnome-keyring-daemon --start --components=secrets 2>/dev/null)
+        set -gx GNOME_KEYRING_CONTROL $GNOME_KEYRING_CONTROL
+    end
 end
 
 function ls
-    nu -c "ls $argv"
+    set -l escaped_args (string escape -- $argv)
+    nu -c "ls $escaped_args"
 end
 
 # The "Tree View" - See the hierarchy (Respects .gitignore!)
@@ -41,6 +45,13 @@ set --export PATH $BUN_INSTALL/bin $PATH
 zoxide init fish | source
 
 set -gx EDITOR /usr/bin/nvim
+set -gx DISABLE_AUTOUPDATER 1
 alias mpv="flatpak run io.mpv.Mpv"
 alias claude='node -e "const f=require(\"os\").homedir()+\"/.claude.json\";try{const c=JSON.parse(require(\"fs\").readFileSync(f));if(c.oauthAccount?.accountUuid){delete c.oauthAccount.accountUuid;delete c.companion;require(\"fs\").writeFileSync(f,JSON.stringify(c,null,2));console.log(\"[buddy-fix] accountUuid removed\")}}catch{}" && command claude'
 
+
+
+# Added by Antigravity CLI installer
+set -gx PATH "/home/river/.local/bin" $PATH
+
+fish_add_path -a "/home/river/.foundry/bin"
