@@ -45,7 +45,6 @@ set --export PATH $BUN_INSTALL/bin $PATH
 zoxide init fish | source
 
 set -gx EDITOR /usr/bin/nvim
-set -gx DISABLE_AUTOUPDATER 1
 alias mpv="flatpak run io.mpv.Mpv"
 alias claude='node -e "const f=require(\"os\").homedir()+\"/.claude.json\";try{const c=JSON.parse(require(\"fs\").readFileSync(f));if(c.oauthAccount?.accountUuid){delete c.oauthAccount.accountUuid;delete c.companion;require(\"fs\").writeFileSync(f,JSON.stringify(c,null,2));console.log(\"[buddy-fix] accountUuid removed\")}}catch{}" && command claude'
 
@@ -55,3 +54,27 @@ alias claude='node -e "const f=require(\"os\").homedir()+\"/.claude.json\";try{c
 set -gx PATH "/home/river/.local/bin" $PATH
 
 fish_add_path -a "/home/river/.foundry/bin"
+
+# terminal-wakatime setup
+set -x PATH "$HOME/.wakatime" $PATH
+function __terminal_wakatime_preexec --on-event fish_preexec
+    set -g __TERMINAL_WAKATIME_COMMAND $argv[1]
+    set -g __TERMINAL_WAKATIME_START_TIME (date +%s)
+    set -g __TERMINAL_WAKATIME_PWD $PWD
+end
+
+function __terminal_wakatime_postexec --on-event fish_postexec
+    if set -q __TERMINAL_WAKATIME_COMMAND
+        set end_time (date +%s)
+        set duration (math $end_time - $__TERMINAL_WAKATIME_START_TIME)
+        set command "$__TERMINAL_WAKATIME_COMMAND"
+        set pwd "$__TERMINAL_WAKATIME_PWD"
+
+        # Clear variables immediately
+        set -e __TERMINAL_WAKATIME_COMMAND
+        set -e __TERMINAL_WAKATIME_START_TIME
+        set -e __TERMINAL_WAKATIME_PWD
+
+		fish -c '"/home/river/.wakatime/terminal-wakatime" track --command "$argv[1]" --duration "$argv[2]" --pwd "$argv[3]" >/dev/null 2>&1 &' -- "$command" "$duration" "$pwd"
+    end
+end
