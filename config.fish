@@ -1,3 +1,5 @@
+# TODO: gay
+
 set -x NVM_DIR ~/.nvm
 function mount_gdedit
 	rclone mount gdedit: ~/mnt/gdrive --drive-root-folder-id 1Jv7Oct_EBdgdPE5cWwHiSgmSu7Mil1jU --vfs-cache-mode full --stats 1s -v
@@ -17,11 +19,11 @@ function mount_watching
 end
 function fish_greeting
 	if status is-interactive
-		echo "" && echo "";
+		#echo "" && echo "";
 		if test $COLUMNS -ge 159
-			fastfetch --config ~/.config/fastfetch/wide.jsonc
+			#	fastfetch --config ~/.config/fastfetch/wide.jsonc
 		else
-			fastfetch
+			#	fastfetch
 		end
 	end
 end
