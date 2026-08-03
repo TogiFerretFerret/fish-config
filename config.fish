@@ -19,11 +19,11 @@ function mount_watching
 end
 function fish_greeting
 	if status is-interactive
-		#echo "" && echo "";
+		echo "" && echo "";
 		if test $COLUMNS -ge 159
-			#	fastfetch --config ~/.config/fastfetch/wide.jsonc
+			fastfetch --config ~/.config/fastfetch/wide.jsonc
 		else
-			#	fastfetch
+			fastfetch
 		end
 	end
 end
